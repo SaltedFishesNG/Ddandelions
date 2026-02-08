@@ -34,7 +34,16 @@
               # libreoffice
               mpv
               qbittorrent
-              signal-desktop
+              (symlinkJoin {
+                name = "signal-desktop";
+                paths = [ signal-desktop ];
+                buildInputs = [ makeWrapper ];
+                postBuild = ''
+                  wrapProgram $out/bin/signal-desktop \
+                    --set HTTPS_PROXY "socks5://localhost:1024" \
+                    --set HTTP_PROXY "socks5://localhost:1024"
+                '';
+              })
               # tor-browser
               zed-editor
 

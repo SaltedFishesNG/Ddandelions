@@ -37,6 +37,7 @@
                 directory = ".ssh";
                 mode = "0700";
               }
+              ".config/Signal"
               ".config/qBittorrent"
               ".local/share/qBittorrent"
               ".mozilla/firefox/default"
