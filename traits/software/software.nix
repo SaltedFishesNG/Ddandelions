@@ -17,6 +17,7 @@
           environment.systemPackages =
             with pkgs;
             [
+              disko
               file
               git
               gnupg
@@ -24,6 +25,8 @@
               nh
               nix-output-monitor
               nixfmt-tree
+              parted
+              sbctl
               tree
               wget
             ]
@@ -45,6 +48,7 @@
                 '';
               })
               # tor-browser
+              vscodium
               zed-editor
 
               android-tools
