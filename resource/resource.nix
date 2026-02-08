@@ -1,6 +1,6 @@
-{ host, pkgs, ... }:
+{ conf, pkgs, ... }:
 let
-  userName = host.basic.userName;
+  userName = "saya";
 in
 {
   systemd.user.tmpfiles.users.${userName}.rules = [

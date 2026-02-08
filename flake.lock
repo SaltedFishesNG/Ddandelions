@@ -159,11 +159,11 @@
     },
     "nixy": {
       "locked": {
-        "lastModified": 1770456640,
-        "narHash": "sha256-+KXP4NmfMOxe8D4OgHRnWy1mPXl0tMyY8b2rCFHoCBk=",
+        "lastModified": 1770523732,
+        "narHash": "sha256-uTEFmbr4xJO8S2Ju8pcuRTMyogLyxoz+HNt8W2CKn+c=",
         "owner": "anialic",
         "repo": "nixy",
-        "rev": "1aa8bc86637e25258457cc05b176895bb0a07bbb",
+        "rev": "4bd357f8ca918883752122dc7924e0a85e571aca",
         "type": "github"
       },
       "original": {
