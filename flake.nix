@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
     disko.url = "github:nix-community/disko/latest";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote/v1.0.0";
@@ -18,6 +17,11 @@
     { nixpkgs, nixy, ... }@inputs:
     let
       lib = nixpkgs.lib;
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+      forSystems = f: lib.genAttrs systems f;
       cluster = nixy.eval lib {
         imports = [
           ./traits
@@ -25,34 +29,20 @@
         ];
         args = { inherit inputs; };
       };
-    in
-    {
-      nixosConfigurations = lib.mapAttrs (
-        _: node:
+      mkSystem =
+        node:
         lib.nixosSystem {
           system = node.meta.system;
           modules = [ node.module ];
-        }
-      ) cluster.nodes;
-
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
-
-      formatter.aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.nixfmt-tree;
-
-      packages.x86_64-linux =
-        let
-          imageConfig = lib.nixosSystem {
-            system = "aarch64-linux";
-            modules = [ cluster.nodes.Image.module ];
-          };
-          isoConfig = lib.nixosSystem {
-            system = "x86_64-linux";
-            modules = [ cluster.nodes.iso.module ];
-          };
-        in
-        {
-          diskoImage = imageConfig.config.system.build.diskoImages;
-          iso = isoConfig.config.system.build.isoImage;
         };
+      nixosSystems = lib.mapAttrs (_: mkSystem) cluster.nodes;
+    in
+    {
+      nixosConfigurations = nixosSystems;
+      formatter = forSystems (s: nixpkgs.legacyPackages.${s}.nixfmt-tree);
+      packages = forSystems (s: {
+        diskoImage = nixosSystems.Image.config.system.build.diskoImages;
+        iso = nixosSystems.iso.config.system.build.isoImage;
+      });
     };
 }
