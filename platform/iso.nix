@@ -1,4 +1,5 @@
 {
+  conf,
   lib,
   modulesPath,
   pkgs,
@@ -15,4 +16,7 @@
   isoImage.squashfsCompression = "zstd -Xcompression-level 6";
 
   system.nixos-init.enable = lib.mkForce false;
+  services.greetd.settings.default_session.command = lib.mkForce ''
+    ${lib.getExe pkgs.tuigreet} -g "The username is '${conf.base.userName}' or 'root'."
+  '';
 }
