@@ -13,6 +13,7 @@
         hostName = "Image";
         userName = "saya";
         password = "";
+        bootLoaderTimeout = 2;
         useSudo-rs = true;
         useWireless = false;
         useTPM2 = false;
@@ -25,7 +26,7 @@
         device = "/dev/vda";
         withLUKS = false;
         espSize = "100M";
-        imageSize = "2G";
+        imageSize = "3G";
       };
     };
   };

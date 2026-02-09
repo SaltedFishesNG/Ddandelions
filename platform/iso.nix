@@ -19,4 +19,6 @@
   services.greetd.settings.default_session.command = lib.mkForce ''
     ${lib.getExe pkgs.tuigreet} -g "The username is '${conf.base.userName}' or 'root'."
   '';
+
+  environment.systemPackages = [ pkgs.sbctl ];
 }

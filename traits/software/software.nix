@@ -23,15 +23,14 @@
             [
               disko
               file
-              git
               gnupg
               ncdu
               nh
               nix-output-monitor
               nixfmt-tree
               parted
-              sbctl
               tree
+              vim
               wget
             ]
             ++ lib.optionals cfg.extra [
@@ -51,6 +50,7 @@
                     --set HTTP_PROXY "socks5://localhost:1024"
                 '';
               })
+              thunderbird
               # tor-browser
               vscodium
               zed-editor
@@ -109,11 +109,6 @@
               };
             };
             mtr.enable = cfg.extra;
-            thunderbird.enable = cfg.extra;
-            vim = {
-              enable = true;
-              package = pkgs.vim-full;
-            };
           };
 
           services.flatpak.enable = cfg.extra;

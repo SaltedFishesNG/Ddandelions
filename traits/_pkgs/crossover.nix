@@ -74,8 +74,8 @@ let
       libjpeg
       libtiff
       libpng12
-      xorg.libXft
-      xorg.libXrender
+      libXft
+      libXrender
       cups
       dbus
       fontconfig
@@ -108,16 +108,16 @@ let
       # Graphics
       libGL
       libGLU
-      xorg.libICE
-      xorg.libSM
-      xorg.libX11
-      xorg.libXcomposite
-      xorg.libXcursor
-      xorg.libXext
-      xorg.libXi
-      xorg.libXinerama
-      xorg.libXrandr
-      xorg.libXxf86vm
+      libICE
+      libSM
+      libX11
+      libXcomposite
+      libXcursor
+      libXext
+      libXi
+      libXinerama
+      libXrandr
+      libXxf86vm
       libdrm
       mesa
 
