@@ -1,13 +1,13 @@
 { mkBool, ... }:
 {
   schema.virtualisation = {
+    useLibvirt = mkBool false;
     useXen = mkBool false;
     useLxc = mkBool false;
   };
 
   traits.virtualisation =
     {
-      config,
       lib,
       pkgs,
       schema,
@@ -19,9 +19,8 @@
     in
     {
       virtualisation = {
-        spiceUSBRedirection.enable = true;
         libvirtd = {
-          enable = true;
+          enable = cfg.useLibvirt;
           qemu = {
             swtpm.enable = true;
             vhostUserPackages = [ pkgs.virtiofsd ];
@@ -35,14 +34,31 @@
         lxc.enable = cfg.useLxc;
       };
 
-      users.users.${userName}.extraGroups = [
-        "kvm"
-        "libvirtd"
+      environment.systemPackages = with pkgs; [
+        qemu
+        virglrenderer
+        virt-manager
+        virt-viewer
+        virtiofsd
       ];
 
-      environment.systemPackages = [ pkgs.virglrenderer ];
-      programs.virt-manager.enable = true;
+      programs.dconf.profiles.user.databases =
+        let
+          uris = [
+            "qemu:///session"
+          ]
+          ++ lib.optionals cfg.useLibvirt [ "qemu:///system" ]
+          ++ lib.optionals cfg.useXen [ "xen:///" ]
+          ++ lib.optionals (cfg.useLxc && cfg.useLibvirt) [ "lxc:///" ];
+        in
+        [
+          {
+            settings."org/virt-manager/virt-manager/connections".autoconnect = uris;
+            settings."org/virt-manager/virt-manager/connections".uris = uris;
+          }
+        ];
 
-      networking.firewall.trustedInterfaces = lib.mkIf config.networking.nftables.enable [ "virbr0" ];
+      users.users.${userName}.extraGroups = [ "kvm" ] ++ lib.optionals cfg.useLibvirt [ "libvirtd" ];
+      networking.firewall.trustedInterfaces = lib.mkIf cfg.useLibvirt [ "virbr0" ];
     };
 }

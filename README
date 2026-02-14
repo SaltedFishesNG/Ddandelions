@@ -6,7 +6,7 @@ Third-Party Assets
   If you are the original artist and wish to have your work removed, please contact me.
 
 Install NixOS
-    $ git clone <repo>
+    $ git clone --depth 1 <repo>
     $ cd Dandelions
     $ sudo nixos-generate-config --no-filesystems --show-hardware-config > ./platform/foo.nix
     $ vim ./nodes/Gamma.nix
